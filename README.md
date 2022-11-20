@@ -39,7 +39,20 @@ Confirm our database has been created:
 ```
 \l
 ```
-https://www.postgresql.org/ftp/pgadmin/pgadmin4/v6.16/macos/
+If you can see the database you created, enter `\q` to leave.
+
+Finally, store the username and password as your environment variables:
+```
+export DB_USERNAME = 'sammy';
+export DB_PASSWORD = 'password';
+```
+
+
+### Step 3: Use PostgreSQL in Flask app
+Run `db_init.py` to create all the tables that is needed for our project. If you are using IDE like PyCharm, remember to configure the environment variables before running the script.
+
+Note: 
+[PgAdmin 4](https://www.postgresql.org/ftp/pgadmin/pgadmin4/v6.16/macos/) is a good tool to manage the PostgreSQL.
 
 # Production
 
