@@ -2,8 +2,8 @@
 DPRP is a Decentralized Product Review Platform.
 ## Teammates
 - Ziyuan Jiang (zj2322)
-- Jiarui Lyu ()
-- Kerim Kurttepeli ()
+- Jiarui Lyu (jl6038)
+- Kerim Kurttepeli (kk3084)
 
 # Development Guide
 ## Database Setup
@@ -49,10 +49,25 @@ export DB_PASSWORD = 'password';
 
 
 ### Step 3: Use PostgreSQL in Flask app
-Run `db_init.py` to create all the tables that is needed for our project. If you are using IDE like PyCharm, remember to configure the environment variables before running the script.
+Run `db_init.py` to create all the tables that is needed for our project. If you are using IDE like PyCharm, remember to configure the environment variables (username and password) before running the script.
 
 Note: 
 [PgAdmin 4](https://www.postgresql.org/ftp/pgadmin/pgadmin4/v6.16/macos/) is a good tool to manage the PostgreSQL.
+
+## Web3 setup
+To setup the web3 development environment, follow the steps below:
+
+### Step 1: Connect to a blockchain
+Use Ganache-cli or Ganache app to create a testnet. Get the url of the testnet, copy and paste it to `WEB3_URL` in `web3_config.py`.
+
+### Step 2: Configure the admin account
+Choose one account in the testnet as the admin account, copy and paste its private key in `web3_config.py`.
+
+### Step 3: Configure the contract
+The contract is in `contracts/DPRP.sol`. Use Remix IDE to deploy the contract to Ganache provider (you should use the admin account to deploy the contract). Copy and paste the contract address and its ABI to `web3_config.py`.
+
+### Step 4: Initialize the contract
+Initialize the contract by sending some money to the contract. This can be done by running `web3_init.py`.
 
 # Production
 
