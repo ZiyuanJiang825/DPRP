@@ -58,7 +58,7 @@ Note:
 To setup the web3 development environment, follow the steps below:
 
 ### Step 1: Connect to a blockchain
-Use Ganache-cli or Ganache app to create a testnet. Get the url of the testnet, copy and paste it to WEB3_URL in `web3_config.py`.
+Use Ganache-cli or Ganache app to create a testnet. Get the url of the testnet, copy and paste it to `WEB3_URL` in `web3_config.py`.
 
 ### Step 2: Configure the admin account
 Choose one account in the testnet as the admin account, copy and paste its private key in `web3_config.py`.
