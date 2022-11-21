@@ -23,7 +23,7 @@ conn = psycopg2.connect(
         password=os.environ['DB_PASSWORD'])
 
 # set up web3 connection
-w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
+w3 = Web3(Web3.HTTPProvider(WEB3_URL))
 # set up default account
 w3.eth.default_account = Account.from_key(ADMIN_PRIVATE_KEY)
 # create the contract instance here
