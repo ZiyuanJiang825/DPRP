@@ -26,6 +26,7 @@
                                         <!-- Login form-->
                                         <form action="{{ url_for('login') }}" method="post">
                                             <!-- Form Group (email address)-->
+                                            <div class="msg">{{ msg }}</div>
                                             <div class="mb-3">
                                                 <label class="small mb-1" for="inputUsername">Username</label>
                                                 <input class="form-control" id="inputUsername" name="inputUsername" type="text" placeholder="Enter username" />

@@ -10,13 +10,20 @@
     </header>
     <!-- Main page content-->
     <div class="container-xl px-4">
-        <h1><a class="mt-5 mb-0" href = {{ url_for('myReview', user_id = id) }}>My Reviews</a></h1>
-
-        <!-- <a class="nav-link" >Profile</a> -->
-        <h1><a class="mt-5 mb-0" href="add-review">Add a Review</a></h1>
-        <p>Add a review!</p>
+        <h2 class="mt-5 mb-0"> Reviews </h2>
+        <p> Add a review or see all your reviews! </p>
         <hr class="mt-0 mb-4" />
+
         <div class="row">
+            <div class="col-md-6">
+                <a class="mt-5 mb-0" href="add-review">Add a Review</a>
+            </div>
+            <div class="col-md-6">
+                <a class="mt-5 mb-0" href = "{{ url_for('myReview', user_id = id) }}"> My Reviews  </a>
+            </div>
+        </div>
+
+        <div class="mb-5">
         </div>
 
         <h2 class="mt-5 mb-0">Starter Layouts</h2>

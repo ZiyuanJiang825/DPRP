@@ -189,7 +189,7 @@ def review(user_id, review_id):
                     "Pros": review[6],
                     "Cons": review[7],
                     "Rating": review[8],
-                    "Create_time":review[9]
+                    "Create_time": review[9]
                     }
     conn.commit()
     cursor.close()
@@ -208,10 +208,10 @@ def verify():
                     "pros": review[6],
                     "cons": review[7],
                     "rating": str(review[8]),
-                    "create_time":review[9]
+                    "create_time": review[9]
                 }
     reviewjson = json.dumps(reviewEntry)
-    hashedjson = str(w3.keccak(text = reviewjson))
+    hashedjson = str(w3.keccak(text=reviewjson))
     reviewTxHash = review[2]
     tx_receipt = w3.eth.get_transaction_receipt(reviewTxHash)
     review_details = DPRP_contract.events.Log().processLog(tx_receipt['logs'][0])
@@ -239,7 +239,7 @@ def withdraw(addr, amount):
     :param amount: amount to transact. Unit: ether
     :return:
     '''
-    withdraw_tx_hash = DPRP_contract.functions.withdraw(addr, Web3.toWei(0.01, 'ether')).build_transaction(
+    withdraw_tx_hash = DPRP_contract.functions.withdraw(addr, Web3.toWei(amount, 'ether')).build_transaction(
         {'gas': 100000,
          'gasPrice': w3.eth.generate_gas_price(),
          'nonce': w3.eth.get_transaction_count(w3.eth.default_account.address)
@@ -264,4 +264,4 @@ def addReview(pk, addr, msg):
     return review_tx_hash
     
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
