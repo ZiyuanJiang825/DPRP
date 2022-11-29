@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>  
+        <script src="{{ url_for('static',filename='/js/review.js') }}"> </script>
+        <script> let review = {{review|tojson}} </script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    </head>
+
+    <body>
+        <div class = "container-fluid">
+            <div class = "row">
+                <div class= "col-md-3">
+                    Title:
+                </div>
+                <div class= "col-md-6">
+                    {{review.Title}}
+                </div>
+                <div class = "col-md-2">
+                    {{review.Create_time}}
+                </div>
+                <div class = "col-md-1">
+                    <button id = 'verify'>Verify</button>
+                </div>
+            </div>
+            <div class = "row">
+                <div class= "col-md-3">
+                    ProductName
+                </div>
+                <div class= "col-md-6">
+                    {{review.ProductName}}
+                </div>   
+            </div>
+            <div class = "row">
+                <div class= "col-md-3">
+                    Review:
+                </div>
+                <div class= "col-md-6">
+                    {{review.Review}}
+                </div>   
+            </div>
+            <div class = "row">
+                <div class= "col-md-3">
+                    Pros:
+                </div>
+                <div class= "col-md-6">
+                    {{review.Pros}}
+                </div>   
+            </div>
+            <div class = "row">
+                <div class= "col-md-3">
+                    Cons:
+                </div>
+                <div class= "col-md-6">
+                    {{review.Cons}}
+                </div>   
+            </div>
+            <div class = "row">
+                <div class= "col-md-3">
+                    Rating:
+                </div>
+                <div class= "col-md-6">
+                    {{review.Rating}}
+                </div>   
+            </div>   
+        </div>
+    </body>
+</html>
+
+<style>
+    
+</style>
+

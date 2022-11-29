@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>  
+        <script src="{{ url_for('static',filename='/js/reviews.js') }}"> </script>
+        <script>
+            let reviews = {{reviews|tojson}}
+        </script>
+    </head>
+    <body>
+        <div class = "container">
+            <div>My Reviews</div>
+            <div id = "reviews">
+            
+            </div>
+        </div>
+    </body>
+</html>
+
+<style>
+    
+</style>
+

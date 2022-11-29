@@ -1,7 +1,7 @@
 # place to store some config values
 # in development, please set these values to be your own values
 
-CONTRACT_ADDRESS = '0x998eBfed275b99178b17Aa5ADD88D74F31B760a3'
+CONTRACT_ADDRESS = '0xBceFd8520750544bfFB56425e6A814Ac5089B4eE'
 CONTRACT_ABI = [
 	{
 		"inputs": [
@@ -90,6 +90,6 @@ CONTRACT_ABI = [
 	}
 ]
 
-ADMIN_PRIVATE_KEY = "185e104b52a687624e7e1045c254e2aa006f30b2b6df1b65cfa3c8bf493c1f92"
+ADMIN_PRIVATE_KEY = "14cf34960d0939dbb033bfa73714db9eec8affa69e0e242525757a67c1740caa"
 
-WEB3_URL = 'http://127.0.0.1:7545'
+WEB3_URL = 'HTTP://127.0.0.1:7545'

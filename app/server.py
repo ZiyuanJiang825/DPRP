@@ -1,3 +1,4 @@
+import json
 from flask import Flask
 from flask import render_template
 from flask import Response, request, jsonify, redirect, url_for, session
@@ -9,6 +10,7 @@ from web3_config import *
 from eth_account import Account
 import secrets
 from web3.gas_strategies.rpc import rpc_gas_price_strategy
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -104,7 +106,121 @@ def logout():
 
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    if len(session) == 0:
+        return redirect(url_for('login'))
+    return render_template('index.html', id = session['id'])
+
+@app.route('/reviews/<user_id>')
+def myReview(user_id):
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM reviews WHERE user_id = %s', (user_id,))
+    reviews = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    return render_template('reviews.html', reviews = reviews)
+
+@app.route('/add-review', methods=('GET', 'POST'))
+def addReview():
+    msg = ''
+    if len(session) == 0:
+        msg = 'Please Login First!'
+        return render_template('add-review.html', msg=msg)
+    accountId = str(session['id'])
+    if request.method == 'POST' and 'inputTitle' in request.form and 'inputReview' in request.form \
+            and 'inputProductName' in request.form and 'inputPros' in request.form \
+            and 'inputCons' in request.form and request.form['inputRating'] != "Please Rate":
+        title = request.form['inputTitle']
+        productName = request.form['inputProductName']
+        review = request.form['inputReview']
+        pros = request.form['inputPros']
+        cons = request.form['inputCons']
+        rating = request.form['inputRating']
+        if title == '' or productName == '' or review == '' or pros == '' or cons == '' or rating == 'Please Rate':
+            msg = 'Please fill out the form !'
+            return render_template('add-review.html', msg=msg)
+
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE id = %s', (accountId,))
+        account = cursor.fetchone()
+        if not account:
+            msg = 'Account not found!'
+        else:
+            cursor.execute('SELECT * FROM products WHERE product_name  = %s', (productName,))
+            product = cursor.fetchone()
+            if not product:
+                msg = 'Product not found!'
+            else:
+                productId = product[0]
+                createTime = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                reviewEntry = {"title": title,
+                                "productName": productName,
+                                "userId": accountId,
+                                "review": review,
+                                "pros": pros,
+                                "cons": cons,
+                                "rating": rating,
+                                "create_time":createTime
+                            }
+                reviewjson = json.dumps(reviewEntry)
+                txHash = addReview(session['web3_account_pk'], session['web3_account_addr'], reviewjson)
+                cursor.execute('INSERT INTO reviews\
+                                 VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING review_id', \
+                                (accountId, w3.toHex(txHash), title, productName,review, pros, cons, rating, createTime))
+                [reviewId] = cursor.fetchone()
+                cursor.execute('INSERT INTO product2reviews\
+                                 VALUES (%s, %s)', \
+                                (productId, reviewId))
+                conn.commit()
+                msg = 'You have successfully added a review!'
+            cursor.close()
+    elif request.method == 'POST':
+        msg = 'Please fill out the form !'
+    return render_template('add-review.html', msg=msg)
+
+@app.route('/review/<user_id>/<review_id>', methods=['GET','POST'])
+def review(user_id, review_id):
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM reviews WHERE user_id = %s and review_id = %s', (user_id,review_id,))
+    review = cursor.fetchone()
+    reviewEntry = { "Id" : review[0],
+                    "Title": review[3],
+                    "ProductName": review[4],
+                    "Review": review[5],
+                    "Pros": review[6],
+                    "Cons": review[7],
+                    "Rating": review[8],
+                    "Create_time":review[9]
+                    }
+    conn.commit()
+    cursor.close()
+    return render_template('review.html', review = reviewEntry)
+
+@app.route('/review/verify', methods=['POST'])
+def verify():
+    reviewId = request.get_json()['Id']
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM reviews WHERE review_id = %s', (reviewId,))
+    review = cursor.fetchone()
+    reviewEntry = {"title": review[3],
+                    "productName": review[4],
+                    "userId": str(review[1]),
+                    "review": review[5],
+                    "pros": review[6],
+                    "cons": review[7],
+                    "rating": str(review[8]),
+                    "create_time":review[9]
+                }
+    reviewjson = json.dumps(reviewEntry)
+    hashedjson = str(w3.keccak(text = reviewjson))
+    reviewTxHash = review[2]
+    tx_receipt = w3.eth.get_transaction_receipt(reviewTxHash)
+    review_details = DPRP_contract.events.Log().processLog(tx_receipt['logs'][0])
+    conn.commit()
+    cursor.close()
+    if hashedjson == review_details['args']['message']:
+        return jsonify('This review is valid!')
+    else:
+        return jsonify('This review is corrupted!')
 
 def register_web3():
     '''
@@ -131,5 +247,21 @@ def withdraw(addr, amount):
     withdraw_signed_txn = w3.eth.default_account.sign_transaction(withdraw_tx_hash)
     w3.eth.send_raw_transaction(withdraw_signed_txn.rawTransaction)
 
+def addReview(pk, addr, msg):
+    '''
+
+    :param addr: addr to receive the money
+    :param amount: amount to transact. Unit: ether
+    :return:
+    '''
+    hashedMsg = str(w3.keccak(text = msg))
+    review_tx = DPRP_contract.functions.addReview(hashedMsg).build_transaction(
+        {
+         'nonce': w3.eth.get_transaction_count(addr)
+         })
+    review_signed_txn = w3.eth.account.sign_transaction(review_tx,pk)
+    review_tx_hash = w3.eth.send_raw_transaction(review_signed_txn.rawTransaction)
+    return review_tx_hash
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
