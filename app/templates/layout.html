@@ -227,11 +227,11 @@
                             </a>
 
                             <div class="sidenav-menu-heading">Reviews</div>
-                            <a class="nav-link" href="add-review">
+                            <a class="nav-link" href="{{ url_for('addReview') }}">
                                 <div class="nav-link-icon"><i data-feather="grid"></i></div>
                                 Add a review
                             </a>
-                            <a class="nav-link" href="{{ url_for('myReview', user_id = id) }}">
+                            <a class="nav-link" href="{{ url_for('myReview', user_id = session['id']) }}">
                                 <div class="nav-link-icon"><i data-feather="globe"></i></div>
                                 My reviews
                             </a>
@@ -296,8 +296,10 @@
         <script src="../static/assets/demo/chart-area-demo.js"></script>
         <script src="../static/assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="../static/js/datatables/datatables-simple-demo.js"></script>
+<!--        <script src="../static/js/datatables/datatables-simple-demo.js"></script>-->
         <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js" crossorigin="anonymous"></script>
         <script src="../static/js/litepicker.js"></script>
+        {% block scripts %}
+        {% endblock scripts %}
     </body>
 </html>

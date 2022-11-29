@@ -16,7 +16,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <a class="mt-5 mb-0" href="add-review">Add a Review</a>
+                <a class="mt-5 mb-0" href="{{ url_for('addReview') }}">Add a Review</a>
             </div>
             <div class="col-md-6">
                 <a class="mt-5 mb-0" href = "{{ url_for('myReview', user_id = id) }}"> My Reviews  </a>

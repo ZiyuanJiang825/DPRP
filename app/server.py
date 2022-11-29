@@ -117,7 +117,7 @@ def myReview(user_id):
     reviews = cursor.fetchall()
     conn.commit()
     cursor.close()
-    return render_template('reviews.html', reviews = reviews)
+    return render_template('reviews.html', reviews=reviews)
 
 @app.route('/add-review', methods=('GET', 'POST'))
 def addReview():
