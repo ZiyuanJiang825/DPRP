@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <body class="bg-primary">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container-xl px-4">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <!-- Basic Review form-->
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header justify-content-center"><h3 class="fw-light my-4">Add a Product</h3></div>
+                                    <div class="card-body">
+                                        <!-- Review form-->
+                                        <form action="{{ url_for('addProduct') }}" method="post">
+                                            <div class="msg">{{ msg }}</div>
+                                            <!-- Form Row-->
+                                            <!-- Form Group (Product Name)-->
+                                            <div class="mb-3">
+                                                <label class="small mb-1" for="inputProductName">Product Name</label>
+                                                <input class="form-control" name="inputProductName" id="inputProductName" type="text" placeholder="Enter Product Name" />
+                                            </div>
+                                            <!-- Form Group (link)            -->
+                                            <div class="mb-3">
+                                                <label class="small mb-1" for="inputLink">Link to the Product</label>
+                                                <input class="form-control" name="inputLink" id="inputLink" placeholder="Enter Link" />
+                                            </div>
+                                            <!-- Form Group (description)            -->
+                                            <div class="mb-3">
+                                                <label class="small mb-1" for="inputDescript">Description</label>
+                                                <textarea class="form-control" name="inputDescript" id="inputDescript" rows="5"  placeholder="Enter Description"></textarea>
+                                            </div>
+                                            <!-- Form Group (create account submit)-->
+                                            <input class="btn btn-primary btn-block" type="submit" value="Submit Product">
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <div class="small"><a href="{{ url_for('index') }}">Cancel</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
+
+{% endblock %}
+
