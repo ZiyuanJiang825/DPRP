@@ -15,7 +15,10 @@
               <node kind="schema" qname="@" />
             </node>
             <node kind="database" qname="dprp">
-              <node kind="schema" qname="public" />
+              <node kind="schema">
+                <name qname="information_schema" />
+                <name qname="public" />
+              </node>
             </node>
           </node>
         </introspection-scope>

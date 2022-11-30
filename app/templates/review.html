@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{%block content %}
+        <div class="card m-10">
+            <div class="card-header"> Title: {{review.Title}} </div>
+
+            <div class="card-body">
+                <div class = "row">
+                    <div class = "row shadow m-1 rounded">
+                        <div class= "col-md-6 fw-bolder">
+                            Product name:
+                        </div>
+                        <div class= "col-md-6">
+                            {{review.ProductName}}
+                        </div>
+                    </div>
+                    <div class = "row shadow m-1 rounded">
+                        <div class= "col-md-6 fw-bolder">
+                            Review content:
+                        </div>
+                        <div class= "col-md-6">
+                            {{review.Review}}
+                        </div>
+                    </div>
+                    <div class = "row shadow m-1 rounded">
+                        <div class= "col-md-6 fw-bolder">
+                            Pros:
+                        </div>
+                        <div class= "col-md-6">
+                            {{review.Pros}}
+                        </div>
+                    </div>
+                    <div class = "row shadow m-1 rounded">
+                        <div class= "col-md-6 fw-bolder">
+                            Cons:
+                        </div>
+                        <div class= "col-md-6">
+                            {{review.Cons}}
+                        </div>
+                    </div>
+                    <div class = "row shadow m-1 rounded">
+                        <div class= "col-md-6 fw-bolder">
+                            Rating:
+                        </div>
+                        <div class= "col-md-6">
+                            {{review.Rating}}
+                        </div>
+                    </div>
+                    <div class = "row shadow m-1 rounded">
+                        <div class = "col-md-6 fw-bolder">
+                            Create time:
+
+                        </div>
+                        <div class = "col-md-6">
+                            {{review.Create_time}}
+                            </div>
+                        </div>
+
+                    </div>
+                 <button class='btn btn-primary' style="margin-top: 10px;" id = 'verify'>Verify</button>
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block scripts %}
+        <script src="{{ url_for('static',filename='/js/review.js') }}"> </script>
+        <script> let review = {{review|tojson}} </script>
+{% endblock scripts %}
+

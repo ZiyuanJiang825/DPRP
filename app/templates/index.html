@@ -10,100 +10,22 @@
     </header>
     <!-- Main page content-->
     <div class="container-xl px-4">
-        <h2 class="mt-5 mb-0">Dashboards</h2>
-        <p>Three dashboard examples to get you started!</p>
+        <h2 class="mt-5 mb-0"> Reviews </h2>
+        <p> Add a review or see all your reviews! </p>
         <hr class="mt-0 mb-4" />
+
         <div class="row">
-            <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="dashboard-1.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/dashboards/default.png" alt="..." /></a>
-                <div class="text-center small">Default Dashboard</div>
+            <div class="col-md-6">
+                <a class="mt-5 mb-0" href="{{ url_for('addReview') }}">Add a Review</a>
             </div>
-            <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="dashboard-3.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/dashboards/affiliate.png" alt="..." /></a>
-                <div class="text-center small">Affiliate Dashboard</div>
-            </div>
-            <div class="col-md-6 col-xl-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="dashboard-2.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/dashboards/multipurpose.png" alt="..." /></a>
-                <div class="text-center small">Multipurpose Dashboard</div>
+            <div class="col-md-6">
+                <a class="mt-5 mb-0" href = "{{ url_for('myReview', user_id = id) }}"> My Reviews  </a>
             </div>
         </div>
-        <h2 class="mt-5 mb-0">App Pages</h2>
-        <p>App pages to cover common use pages to help build your app!</p>
-        <hr class="mt-0 mb-4" />
-        <div class="row">
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="account-billing.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/account-billing.png" alt="..." /></a>
-                <div class="text-center small">Account - Billing</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="account-notifications.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/account-notifications.png" alt="..." /></a>
-                <div class="text-center small">Account - Notifications</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="account-profile.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/account-profile.png" alt="..." /></a>
-                <div class="text-center small">Account - Profile</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="account-security.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/account-security.png" alt="..." /></a>
-                <div class="text-center small">Account - Security</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="auth-login-basic.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/auth-login-basic.png" alt="..." /></a>
-                <div class="text-center small">Auth - Login</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="auth-login-social.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/auth-login-social.png" alt="..." /></a>
-                <div class="text-center small">Auth - Login (Social)</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="multi-tenant-select.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/auth-mutli-tenant.png" alt="..." /></a>
-                <div class="text-center small">Auth - Multi Tenant</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="auth-password-basic.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/auth-password-basic.png" alt="..." /></a>
-                <div class="text-center small">Auth - Password</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="auth-password-social.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/auth-password-social.png" alt="..." /></a>
-                <div class="text-center small">Auth - Password (Social)</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="auth-register-basic.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/auth-register-basic.png" alt="..." /></a>
-                <div class="text-center small">Auth - Register</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="auth-register-social.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/auth-register-social.png" alt="..." /></a>
-                <div class="text-center small">Auth - Register (Social)</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="invoice.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/invoice.png" alt="..." /></a>
-                <div class="text-center small">Invoice</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="knowledge-base-article.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/knowledgebase-article.png" alt="..." /></a>
-                <div class="text-center small">Knowledgebase - Article</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="knowledge-base-category.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/knowledgebase-category.png" alt="..." /></a>
-                <div class="text-center small">Knowledgebase - Category</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="knowledge-base-home-1.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/knowledgebase-home-1.png" alt="..." /></a>
-                <div class="text-center small">Knowledgebase - Home 1</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="knowledge-base-home-2.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/knowledgebase-home-2.png" alt="..." /></a>
-                <div class="text-center small">Knowledgebase - Home 2</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="pricing.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/pricing.png" alt="..." /></a>
-                <div class="text-center small">Pricing</div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-xl-3 mb-4">
-                <a class="d-block lift rounded overflow-hidden mb-2" href="wizard.html"><img class="img-fluid" src="https://assets.startbootstrap.com/img/screenshots-product-pages/sb-admin-pro/pages/wizard.png" alt="..." /></a>
-                <div class="text-center small">Wizard</div>
-            </div>
+
+        <div class="mb-5">
         </div>
+
         <h2 class="mt-5 mb-0">Starter Layouts</h2>
         <p>Layouts for creating new pages within your project!</p>
         <hr class="mt-0 mb-4" />
