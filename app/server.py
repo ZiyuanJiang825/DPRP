@@ -119,6 +119,15 @@ def myReview(user_id):
     cursor.close()
     return render_template('reviews.html', reviews=reviews)
 
+@app.route('/product/all')
+def allProducts():
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products')
+    products = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    return render_template('products.html', products=products)
+
 @app.route('/add-review', methods=('GET', 'POST'))
 def addReview():
     msg = ''
@@ -159,7 +168,7 @@ def addReview():
                                 "pros": pros,
                                 "cons": cons,
                                 "rating": rating,
-                                "create_time":createTime
+                                "create_time": createTime
                             }
                 reviewjson = json.dumps(reviewEntry)
                 txHash = addReview(session['web3_account_pk'], session['web3_account_addr'], reviewjson)
@@ -221,6 +230,43 @@ def verify():
         return jsonify('This review is valid!')
     else:
         return jsonify('This review is corrupted!')
+
+
+@app.route('/add-product', methods=('GET', 'POST'))
+def addProduct():
+    msg = ''
+    if len(session) == 0:
+        msg = 'Please Login First!'
+        return render_template('add-product.html', msg=msg)
+    accountId = str(session['id'])
+    if request.method == 'POST' and 'inputProductName' in request.form and 'inputLink' in request.form \
+            and 'inputDescript' in request.form:
+        productName = request.form['inputProductName']
+        link = request.form['inputLink']
+        descript = request.form['inputDescript']
+        if productName == '' or link == '' or descript == '':
+            msg = 'Please fill out the form !'
+            return render_template('add-product.html', msg=msg)
+
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE id = %s', (accountId,))
+        account = cursor.fetchone()
+        if not account:
+            msg = 'Account not found!'
+        else:
+            cursor.execute('SELECT * FROM products WHERE product_name  = %s', (productName,))
+            product = cursor.fetchone()
+            if product:
+                msg = 'Product already exists!'
+            else:
+                cursor.execute('INSERT INTO products\
+                                 VALUES (DEFAULT, %s, %s, %s)', (productName, link, descript))
+                conn.commit()
+                msg = 'You have successfully added a product!'
+            cursor.close()
+    elif request.method == 'POST':
+        msg = 'Please fill out the form !'
+    return render_template('add-product.html', msg=msg)
 
 def register_web3():
     '''

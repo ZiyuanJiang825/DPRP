@@ -26,99 +26,17 @@
         <div class="mb-5">
         </div>
 
-        <h2 class="mt-5 mb-0">Starter Layouts</h2>
-        <p>Layouts for creating new pages within your project!</p>
+
+        <h2 class="mt-5 mb-0"> Products </h2>
+        <p> Create a product, search or browse all products! </p>
         <hr class="mt-0 mb-4" />
+
         <div class="row">
-            <div class="col-sm-6 col-md-4 mb-4">
-                <div class="small mb-1">Navigation</div>
-                <div class="list-group mb-4">
-                    <a class="list-group-item list-group-item-action p-3" href="layout-static.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Static Sidenav
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="layout-dark.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Dark Sidenav
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="layout-rtl.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            RTL Layout
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                </div>
-                <div class="small mb-1">Container Options</div>
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action p-3" href="layout-boxed.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Boxed Layouts
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="layout-fluid.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Fluid Layout
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                </div>
+            <div class="col-md-6">
+                <a class="mt-5 mb-0" href="{{ url_for('addReview') }}">Add a Review</a>
             </div>
-            <div class="col-sm-6 col-md-4 mb-4">
-                <div class="small mb-1">Page Headers</div>
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action p-3" href="header-simplified.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Simplified
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="header-compact.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Compact
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="header-overlap.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Content Overlap
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="header-breadcrumbs.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Breadcrumbs
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="header-light.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Light
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 mb-4">
-                <div class="small mb-1">Starter Layouts</div>
-                <div class="list-group mb-4">
-                    <a class="list-group-item list-group-item-action p-3" href="starter-default.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Default
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                    <a class="list-group-item list-group-item-action p-3" href="starter-minimal.html">
-                        <div class="d-flex align-items-center justify-content-between">
-                            Minimal
-                            <i class="text-muted" data-feather="arrow-right"></i>
-                        </div>
-                    </a>
-                </div>
+            <div class="col-md-6">
+                <a class="mt-5 mb-0" href = "{{ url_for('myReview', user_id = id) }}"> My Reviews  </a>
             </div>
         </div>
     </div>

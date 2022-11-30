@@ -1,16 +1,14 @@
 
 $(document).ready(function(){
-    var table = $('#review-list-body');
-    for(let i=0; i<reviews.length; i++){
-        review = reviews[i];
+    var table = $('#product-list-body');
+    for(let i=0; i<products.length; i++){
+        let product = products[i];
         let row = $("<tr>");
 
         let col = $('<td>');
-        col.append($("<a href=/review/" + reviews[i][1] + '/' + reviews[i][0] + '>'+ review[3] + "</a>"));
+        col.append($("<a href=/product/" + product[i][0]  + '>'+ product[1] + "</a>"));
         row.append(col);
 
-        row.append($('<td>').text(review[4]));
-        row.append($('<td>').text(review[9]));
         let action_col = $("<td>");
         action_col.append($("<a class=\"btn btn-datatable btn-icon btn-transparent-dark\" href=\"#!\"><i data-feather=\"edit\"></i></a>"));
         action_col.append($("<span>&nbsp&nbsp&nbsp</span>"));
