@@ -102,6 +102,8 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     session.pop('email', None)
+    session.pop('web3_account_pk', None)
+    session.pop('web3_account_addr', None)
     return redirect(url_for('login'))
 
 @app.route('/index')
@@ -112,6 +114,8 @@ def index():
 
 @app.route('/reviews/<user_id>')
 def myReview(user_id):
+    if len(session) == 0:
+        return redirect(url_for('login'))
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM reviews WHERE user_id = %s', (user_id,))
     reviews = cursor.fetchall()
@@ -121,6 +125,8 @@ def myReview(user_id):
 
 @app.route('/products/all')
 def allProducts():
+    if len(session) == 0:
+        return redirect(url_for('login'))
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM products')
     products = cursor.fetchall()
@@ -188,6 +194,8 @@ def addReview():
 
 @app.route('/review/<user_id>/<review_id>', methods=['GET','POST'])
 def review(user_id, review_id):
+    if len(session) == 0:
+        return redirect(url_for('login'))
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM reviews WHERE user_id = %s and review_id = %s', (user_id,review_id,))
     review = cursor.fetchone()

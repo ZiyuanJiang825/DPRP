@@ -14,7 +14,7 @@
                                     <div class="card-body">
                                         <!-- Review form-->
                                         <form action="{{ url_for('addReview') }}" method="post">
-                                            <div class="msg">{{ msg }}</div>
+                                            <div class="alert alert-info" id="alert-msg">{{ msg }}</div>
                                             <!-- Form Row-->
                                             <!-- Form Group (Title)-->
                                             <div class="mb-3">
@@ -85,4 +85,17 @@
     </body>
 
 {% endblock %}
+
+{% block scripts %}
+    <script> let msg = {{msg|tojson}}</script>
+    <script>
+        $(document).ready(function(){
+            console.log(msg);
+            if (msg == "Please Login First!") {
+
+                setTimeout("window.location.href='/login'", 1000);
+            }
+        })
+    </script>
+{% endblock scripts %}
 
