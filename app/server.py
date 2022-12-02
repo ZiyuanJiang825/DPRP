@@ -301,6 +301,19 @@ def addProduct():
         msg = 'Please fill out the form !'
     return render_template('add-product.html', msg=msg)
 
+@app.route('/search')
+def search():
+    return render_template('search.html', products=[])
+
+@app.route('/search/<searchText>', methods=('GET', 'POST'))
+def performSearch(searchText):
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products WHERE product_name LIKE %s', ('%' + searchText + '%',))
+    products = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    return jsonify(products)
+
 def register_web3():
     '''
     Register the account on the blockchain, send some coins to this account
