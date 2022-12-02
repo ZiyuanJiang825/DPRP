@@ -6,7 +6,7 @@ $(document).ready(function(){
         let row = $("<tr>");
 
         let col = $('<td>');
-        col.append($("<a href=/product/" + product[i][0]  + '>'+ product[1] + "</a>"));
+        col.append($("<a href=/product/" + product[0]  + '>'+ product[1] + "</a>"));
         row.append(col);
 
         let action_col = $("<td>");

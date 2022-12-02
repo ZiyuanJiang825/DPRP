@@ -119,7 +119,7 @@ def myReview(user_id):
     cursor.close()
     return render_template('reviews.html', reviews=reviews)
 
-@app.route('/product/all')
+@app.route('/products/all')
 def allProducts():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM products')
@@ -202,7 +202,7 @@ def review(user_id, review_id):
                     }
     conn.commit()
     cursor.close()
-    return render_template('review.html', review = reviewEntry)
+    return render_template('review.html', review=reviewEntry)
 
 @app.route('/review/verify', methods=['POST'])
 def verify():
@@ -231,6 +231,39 @@ def verify():
     else:
         return jsonify('This review is corrupted!')
 
+@app.route('/product/<product_id>', methods=['GET', 'POST'])
+def view_proudct(product_id):
+    # first we need to retrieve the product info
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products WHERE product_id = %s', (product_id,))
+    product = cursor.fetchone()
+    productEntry = { "Id" : product[0],
+                    "Name": product[1],
+                    "Link": product[2],
+                    "Description": product[3],
+                    }
+    conn.commit()
+    cursor.close()
+
+    # then we need to retrieve all the reviews related to this product
+    cursor = conn.cursor()
+    cursor.execute('''
+        WITH reviewTable (review_id) AS (
+                SELECT review_id FROM product2reviews
+                WHERE product_id = %s 
+        )
+            SELECT reviews.title, reviews.review, reviews.pros, reviews.cons, reviews.rating, users.username
+            FROM reviewTable
+            JOIN reviews
+            ON reviews.review_id=reviewTable.review_id 
+            JOIN users
+            ON users.id=reviews.user_id
+    ''', (product_id,))
+    reviews = cursor.fetchall()
+    print(reviews)
+    conn.commit()
+    cursor.close()
+    return render_template('product.html', product=productEntry, reviews=reviews)
 
 @app.route('/add-product', methods=('GET', 'POST'))
 def addProduct():
