@@ -181,7 +181,8 @@ Make sure you login to Heroku.
 ### Step 3: Create a Heroku Remote
 Follow this [step](https://devcenter.heroku.com/articles/git#create-a-heroku-remote).
 
-We will continue from this step after finishing setting up other parts.
+### Step 4: Configure Procfile
+Reference: https://devcenter.heroku.com/articles/procfile
 
 ## Database Setup
 _Reference: https://devcenter.heroku.com/articles/connecting-heroku-postgres_
@@ -221,5 +222,4 @@ Change the provider to Injected Provider - MetaMask, deploy the contract and cop
 ## Set environment variables on Heroku
 ```shell
 heroku config:set DATABASE_URL=xxxx
-
 ```
