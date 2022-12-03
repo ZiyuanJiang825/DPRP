@@ -49,7 +49,6 @@ def login():
             session['email'] = account[2]
             session['web3_account_pk'] = account[4]
             session['web3_account_addr'] = Account.from_key(account[4]).address
-            print("Session is", session)
             msg = 'Logged in successfully !'
             return redirect(url_for('index'))
         else:
@@ -105,14 +104,12 @@ def logout():
 
 @app.route('/index')
 def index():
-    print("Session is", session)
     if len(session) == 0:
         return redirect(url_for('login'))
     return render_template('index.html', id = session['id'])
 
 @app.route('/reviews/<user_id>')
 def myReview(user_id):
-    print("Session is", session)
     if len(session) == 0:
         return redirect(url_for('login'))
     cursor = conn.cursor()
@@ -267,7 +264,6 @@ def view_proudct(product_id):
             ON users.id=reviews.user_id
     ''', (product_id,))
     reviews = cursor.fetchall()
-    print(reviews)
     conn.commit()
     cursor.close()
     return render_template('product.html', product=productEntry, reviews=reviews)
@@ -338,14 +334,12 @@ def withdraw(addr, amount):
     :param amount: amount to transact. Unit: ether
     :return:
     '''
-    print("Inside withdraw")
 
     withdraw_tx_hash = DPRP_contract.functions.withdraw(addr, Web3.toWei(amount, 'ether')).build_transaction(
         {'gas': 100000,
          'gasPrice': w3.eth.generate_gas_price(),
          'nonce': w3.eth.get_transaction_count(w3.eth.default_account.address)
          })
-    print('Balance is', DPRP_contract.functions.getBalance().call({'from': w3.eth.default_account.address}))
     withdraw_signed_txn = w3.eth.default_account.sign_transaction(withdraw_tx_hash)
     w3.eth.send_raw_transaction(withdraw_signed_txn.rawTransaction)
 
