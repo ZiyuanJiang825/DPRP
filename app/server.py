@@ -35,6 +35,7 @@ def start_redirect():
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
+    print("hahahaha")
     msg = ''
     if request.method == 'POST' and 'inputUsername' in request.form and 'inputPassword' in request.form:
         username = request.form['inputUsername']
@@ -360,4 +361,4 @@ def addReview(pk, addr, msg):
     return review_tx_hash
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
