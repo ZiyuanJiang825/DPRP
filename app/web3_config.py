@@ -2,7 +2,7 @@
 # in development, please set these values to be your own values
 
 # this should be changed for your own
-CONTRACT_ADDRESS = '0x62a8b241624D251B43a6C7d0e62054f0435d7127'
+CONTRACT_ADDRESS = '0x25846832894D1741A1E3eE6F9AD1e4843A932d1F'
 
 # this should be changed for your own
 CONTRACT_ABI = [
@@ -93,8 +93,8 @@ CONTRACT_ABI = [
 	}
 ]
 
-# this should be changed for your own
-ADMIN_PRIVATE_KEY = "185e104b52a687624e7e1045c254e2aa006f30b2b6df1b65cfa3c8bf493c1f92"
+# confidential, your private key for admin account
+ADMIN_PRIVATE_KEY = "8c7c6def207e6b6ea95a53d57054dfd0e851f3040621e50dc18057c893d8ad5a"
 
-# your URL for web3 test server
-WEB3_URL = 'HTTP://127.0.0.1:7545'
+# your URL for web3 test server.
+WEB3_URL = 'https://goerli.infura.io/v3/5b2de740e4494c138e088320d1ea5cac'

@@ -204,5 +204,22 @@ Refer to this [step](https://devcenter.heroku.com/articles/connecting-heroku-pos
 
 After that, you can rerun `db_init.py` to test if the connection works.
 
+## Web3 Setup
+We will use Goerli test network as our blockchain network.
 
-## Requirement for Python
+### Step 1: Set up an admin account and request some coins
+Go to Metamask, create an account, and then go to this [website](https://goerlifaucet.com/
+) to request some coins daily. Set the private key of admin in `web3_config.py`.
+
+### Step 2: Get the API of testnet
+Register an account and a project on Infura, use its Goerli API address, change accordingly in `web3_config.py`
+
+### Step 3: Deploy the contract via Remix
+Change the provider to Injected Provider - MetaMask, deploy the contract and copy the contract address to `web3_config.py`.
+
+### Step 4: Run `web3_init.py`
+## Set environment variables on Heroku
+```shell
+heroku config:set DATABASE_URL=xxxx
+
+```
