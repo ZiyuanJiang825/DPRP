@@ -102,6 +102,8 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     session.pop('email', None)
+    session.pop('web3_account_pk', None)
+    session.pop('web3_account_addr', None)
     return redirect(url_for('login'))
 
 @app.route('/index')
@@ -112,6 +114,8 @@ def index():
 
 @app.route('/reviews/<user_id>')
 def myReview(user_id):
+    if len(session) == 0:
+        return redirect(url_for('login'))
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM reviews WHERE user_id = %s', (user_id,))
     reviews = cursor.fetchall()
@@ -119,8 +123,10 @@ def myReview(user_id):
     cursor.close()
     return render_template('reviews.html', reviews=reviews)
 
-@app.route('/product/all')
+@app.route('/products/all')
 def allProducts():
+    if len(session) == 0:
+        return redirect(url_for('login'))
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM products')
     products = cursor.fetchall()
@@ -188,6 +194,8 @@ def addReview():
 
 @app.route('/review/<user_id>/<review_id>', methods=['GET','POST'])
 def review(user_id, review_id):
+    if len(session) == 0:
+        return redirect(url_for('login'))
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM reviews WHERE user_id = %s and review_id = %s', (user_id,review_id,))
     review = cursor.fetchone()
@@ -202,7 +210,7 @@ def review(user_id, review_id):
                     }
     conn.commit()
     cursor.close()
-    return render_template('review.html', review = reviewEntry)
+    return render_template('review.html', review=reviewEntry)
 
 @app.route('/review/verify', methods=['POST'])
 def verify():
@@ -231,6 +239,39 @@ def verify():
     else:
         return jsonify('This review is corrupted!')
 
+@app.route('/product/<product_id>', methods=['GET', 'POST'])
+def view_proudct(product_id):
+    # first we need to retrieve the product info
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products WHERE product_id = %s', (product_id,))
+    product = cursor.fetchone()
+    productEntry = { "Id" : product[0],
+                    "Name": product[1],
+                    "Link": product[2],
+                    "Description": product[3],
+                    }
+    conn.commit()
+    cursor.close()
+
+    # then we need to retrieve all the reviews related to this product
+    cursor = conn.cursor()
+    cursor.execute('''
+        WITH reviewTable (review_id) AS (
+                SELECT review_id FROM product2reviews
+                WHERE product_id = %s 
+        )
+            SELECT reviews.title, reviews.review, reviews.pros, reviews.cons, reviews.rating, users.username
+            FROM reviewTable
+            JOIN reviews
+            ON reviews.review_id=reviewTable.review_id 
+            JOIN users
+            ON users.id=reviews.user_id
+    ''', (product_id,))
+    reviews = cursor.fetchall()
+    print(reviews)
+    conn.commit()
+    cursor.close()
+    return render_template('product.html', product=productEntry, reviews=reviews)
 
 @app.route('/add-product', methods=('GET', 'POST'))
 def addProduct():
@@ -267,6 +308,19 @@ def addProduct():
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('add-product.html', msg=msg)
+
+@app.route('/search')
+def search():
+    return render_template('search.html', products=[])
+
+@app.route('/search/<searchText>', methods=('GET', 'POST'))
+def performSearch(searchText):
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products WHERE product_name LIKE %s', ('%' + searchText + '%',))
+    products = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    return jsonify(products)
 
 def register_web3():
     '''

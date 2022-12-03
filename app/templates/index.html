@@ -33,10 +33,15 @@
 
         <div class="row">
             <div class="col-md-6">
-                <a class="mt-5 mb-0" href="{{ url_for('addReview') }}">Add a Review</a>
+                <a class="mt-5 mb-0" href="{{ url_for('addProduct') }}">Add a Product</a>
             </div>
             <div class="col-md-6">
-                <a class="mt-5 mb-0" href = "{{ url_for('myReview', user_id = id) }}"> My Reviews  </a>
+                <a class="mt-5 mb-0" href = "{{ url_for('allProducts') }}"> Browse Products  </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a class="mt-5 mb-0" href="{{ url_for('search') }}">Search for a product</a>
             </div>
         </div>
     </div>

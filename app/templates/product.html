@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{%block content %}
+        <div class="card m-10">
+            <div class="card-header"> {{product.Name}} </div>
+
+            <div class="card-body">
+                <div class = "row shadow m-1 rounded">
+                    <div class= "col-md-6 fw-bolder">
+                        Link:
+                    </div>
+                    <div class= "col-md-6">
+                        {{product.Link}}
+                    </div>
+                </div>
+                <div class = "row shadow m-1 rounded">
+                    <div class= "col-md-6 fw-bolder">
+                        Description:
+                    </div>
+                    <div class= "col-md-6">
+                        {{product.Description}}
+                    </div>
+                </div>
+                <div class = "row shadow m-1 rounded">
+                    <div class= "col-md-6 fw-bolder">
+                        Average Rating:
+                    </div>
+                    <div class= "col-md-6" id="avg-rating">
+                    </div>
+                </div>
+                <div class = "row shadow m-1 rounded">
+                    <div class= "col-md-6 fw-bolder">
+                        Review number:
+                    </div>
+                    <div class= "col-md-6" id="review-number">
+                    </div>
+                </div>
+
+
+
+                <div class="card" style="margin-top: 30px;">
+                    <div class="card-header"> Reviews </div>
+
+                    <div class="card-body" id="product-reviews-content">
+                    </div>
+                </div>
+
+            </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script> let product = {{product|tojson}} </script>
+    <script> let reviews = {{reviews|tojson}} </script>
+    <script src="{{ url_for('static',filename='/js/product.js') }}"> </script>
+{% endblock scripts %}

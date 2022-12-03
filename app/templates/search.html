@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <header class="card card-waves">
+        <div class="card-body px-5 pt-5 pb-0">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-6">
+                    <h1 class="text-primary">Search for a product that interests you...</h1>
+                    <p class="lead mb-4">We have thousands of RELIABLE reviews and products, and they are still adding!</p>
+                    <div class="shadow rounded">
+                        <div class="input-group input-group-joined input-group-joined-xl border-0">
+                            <input class="form-control me-0" type="text" id="searchText" placeholder="Search..." aria-label="Search" autofocus />
+                            <span class="input-group-text" onclick="performSearch()"><i data-feather="search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4"><img class="img-fluid" src="{{url_for('static',filename='assets/img/illustrations/problem-solving.svg')}}" /></div>
+            </div>
+        </div>
+    </header>
+    <div class="border rounder m-3">
+        <table id="datatablesSimple">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Product Name</th>
+            </tr>
+        </tfoot>
+        <tbody id='product-list-body'>
+        </tbody>
+    </table>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static',filename='/js/search.js') }}"> </script>
+    <script> let products = {{products|tojson}} </script>
+{% endblock scripts %}
+
+
