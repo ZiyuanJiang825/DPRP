@@ -1,11 +1,7 @@
 import os
 import psycopg2
 
-conn = psycopg2.connect(
-        host="localhost",
-        database="dprp",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
+conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
 
 # Open a cursor to perform database operations
 cur = conn.cursor()

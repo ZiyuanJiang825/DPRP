@@ -18,11 +18,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32).hex()
 
 # set up database connection
-conn = psycopg2.connect(
-        host="localhost",
-        database="dprp",
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD'])
+conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
 
 # set up web3 connection
 w3 = Web3(Web3.HTTPProvider(WEB3_URL))
