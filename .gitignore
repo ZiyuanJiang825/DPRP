@@ -132,6 +132,3 @@ dmypy.json
 .DS_Store
 
 .idea
-
-# web3 configuration file, should keep local
-web3_config.py

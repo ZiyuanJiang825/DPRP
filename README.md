@@ -1,7 +1,3 @@
-# update
-- Review features including adding, viewing, and verifying a review are added. Please checkout feature/review branch
-- Product and product2reviews tables are added in local db for review test. (A product named 'ipad' is pre-inserted for review test)
-
 # Overview
 
 DPRP is a Decentralized Product Review Platform.
@@ -13,6 +9,10 @@ DPRP is a Decentralized Product Review Platform.
 - Jiarui Lyu (jl6038)
 
 - Kerim Kurttepeli (kk3084)
+
+## Features
+- Review features including adding, viewing, and verifying a review are added. Please checkout feature/review branch
+- Product and product2reviews tables are added in local db for review test. (A product named 'ipad' is pre-inserted for review test)
 
   
 
@@ -154,7 +154,7 @@ An example of `web3_config.py` should look like:
 CONTRACT_ADDRESS = 'XXXXXXXXXXXXX'
 
 # this should be changed for your own
-CONTRACT_ABI = [XXXXXXX]
+CONTRACT_ABI = ["XXXXXXX"]
 
 # this should be changed for your own
 ADMIN_PRIVATE_KEY = "XXXXXXXX"
@@ -164,3 +164,63 @@ WEB3_URL = 'HTTP://127.0.0.1:7545'
 ```
 
 # Production
+We will deploy our app to Heroku.
+
+## Heroku Setup
+
+### Step 1: Install Git and Heroku CLI
+Assume you already have Git, then refer to this [page](https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli) for Heroku CLI installation.
+
+### Step 2: Login to Heroku
+```shell
+heroku login
+```
+Make sure you login to Heroku. 
+
+### Step 3: Create a Heroku Remote
+Follow this [step](https://devcenter.heroku.com/articles/git#create-a-heroku-remote).
+
+### Step 4: Configure Procfile
+Reference: https://devcenter.heroku.com/articles/procfile
+
+## Database Setup
+_Reference: https://devcenter.heroku.com/articles/connecting-heroku-postgres_
+
+Heroku naturally supports PostgreSQL. So we will need to configure the database, and make it connect to the remote database.
+**BEFORE** continue, make sure you already configure your local postgre setting (can be found in development guide part).
+
+### Step 1: Create database on Heroku
+```shell
+heroku addons:create heroku-postgresql:mini
+```
+
+### Step 2: Get the username and password for the database
+```shell
+heroku pg:credentials:url DATABASE
+```
+
+### Step 3: Set the configure in Python
+Refer to this [step](https://devcenter.heroku.com/articles/connecting-heroku-postgres#connecting-in-python)
+
+After that, you can rerun `db_init.py` to test if the connection works.
+
+## Web3 Setup
+We will use Goerli test network as our blockchain network.
+
+### Step 1: Set up an admin account and request some coins
+Go to Metamask, create an account, and then go to this [website](https://goerlifaucet.com/
+) to request some coins daily. Set the private key of admin in `web3_config.py`.
+
+### Step 2: Get the API of testnet
+Register an account and a project on Infura, use its Goerli API address, change accordingly in `web3_config.py`
+
+### Step 3: Deploy the contract via Remix
+Change the provider to Injected Provider - MetaMask, deploy the contract and copy the contract address to `web3_config.py`.
+
+### Step 4: Run `web3_init.py`
+## Set environment variables on Heroku
+```shell
+heroku config:set DATABASE_URL=xxxx
+heroku config:set APP_SECRET_KEY=xxxx
+```
+For the secret key, use `os.urandom(32).hex()` to generate.
