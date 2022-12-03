@@ -15,7 +15,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 # in order to use session, we should assign a secret key to the app
-app.secret_key = os.urandom(32).hex()
+app.secret_key = os.environ['APP_SECRET_KEY']
 
 # set up database connection
 conn = psycopg2.connect(
