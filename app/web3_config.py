@@ -4,7 +4,7 @@
 # this should be changed for your own
 CONTRACT_ADDRESS = '0x17b2c4a7AB870F5274d425DAB076d0D5d6cbbd5c'
 
-# this should be changed for your own
+# do not need to change it
 CONTRACT_ABI = [
     {
         "inputs": [],
@@ -92,9 +92,6 @@ CONTRACT_ABI = [
         "type": "receive"
     }
 ]
-
-# this should be changed for your own
-ADMIN_PRIVATE_KEY = "185e104b52a687624e7e1045c254e2aa006f30b2b6df1b65cfa3c8bf493c1f92"
 
 # your URL for web3 test server
 WEB3_URL = 'HTTP://127.0.0.1:7545'

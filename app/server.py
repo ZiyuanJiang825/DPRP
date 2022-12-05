@@ -27,7 +27,7 @@ conn = psycopg2.connect(
 # set up web3 connection
 w3 = Web3(Web3.HTTPProvider(WEB3_URL))
 # set up default account
-w3.eth.default_account = Account.from_key(ADMIN_PRIVATE_KEY)
+w3.eth.default_account = Account.from_key(os.environ['ADMIN_PRIVATE_KEY'])
 # create the contract instance here
 DPRP_contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)
 # generate gas price strategy

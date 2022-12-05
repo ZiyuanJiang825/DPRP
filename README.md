@@ -130,7 +130,8 @@ Use Ganache-cli or Ganache app to create a testnet. Get the url of the testnet, 
 
 ### Step 2: Configure the admin account
 
-Choose one account in the testnet as the admin account, copy and paste its private key in `web3_config.py`.
+Choose one account in the testnet as the admin account, set environment variable `ADMIN_PRIVATE_KEY` as the private key
+of this account.
 
   
 
@@ -155,9 +156,6 @@ CONTRACT_ADDRESS = 'XXXXXXXXXXXXX'
 
 # this should be changed for your own
 CONTRACT_ABI = ["XXXXXXX"]
-
-# this should be changed for your own
-ADMIN_PRIVATE_KEY = "XXXXXXXX"
 
 # your URL for web3 test server
 WEB3_URL = 'HTTP://127.0.0.1:7545'
