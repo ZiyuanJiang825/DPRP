@@ -11,9 +11,36 @@ DPRP is a Decentralized Product Review Platform.
 
 - Kerim Kurttepeli (kk3084)
 
-## Features
-- Review features including adding, viewing, and verifying a review are added. Please checkout feature/review branch
-- Product and product2reviews tables are added in local db for review test. (A product named 'ipad' is pre-inserted for review test)
+## GitHub Repo:
+https://github.com/ZiyuanJiang825/DPRP/tree/prod-demo
+
+(Note: Make sure you are in `prod-demo` branch. This is the demo version for production).
+
+## Deployment Link:
+https://dprp-demo.herokuapp.com/
+
+## Demo Video Link:
+https://www.youtube.com/watch?v=GfUnU8TzuQk
+
+# Features
+- User
+  - User can register for an account, and will get a public address on the blockchain,
+  along with some ETHs sending from the contract.
+  - User can sign in with the correct username and password.
+  - The system will detect the valid formats of registration form.
+- Navigation
+  - There is always a navbar on the left and the top of pages. Left navbar shows 
+  all the entries to different main features. Top navbar allows users to check the profile and logout.
+  - The homepage also shows the entries to the main features.
+- Reviews
+  - A user can add a review by entering details. After adding the review, the review will be hashed
+  and stored on the blockchain by calling a contract function.
+  - A user can see all my reviews and see the detail of every review. A user can verify
+  the review on the detail page. Verification means the review is safely stored on the blockchain.
+- Products
+  - A user can add a product by entering details.
+  - A user can see a product detail and all the reviews of this product.
+  - A user can search for certain products.
 
   
 
