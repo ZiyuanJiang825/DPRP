@@ -22,6 +22,9 @@ https://dprp-demo.herokuapp.com/
 ## Demo Video Link:
 https://www.youtube.com/watch?v=GfUnU8TzuQk
 
+## Slide Link:
+https://docs.google.com/presentation/d/104SabAEYt0UUwtfQh2rAvqwoJmvYUIJo/edit?usp=sharing&ouid=101963760118774812584&rtpof=true&sd=true
+
 # Features
 - User
   - User can register for an account, and will get a public address on the blockchain,
