@@ -23,7 +23,7 @@
                                             <!-- Form Group (Product Name)            -->
                                             <div class="mb-3">
                                                 <label class="small mb-1" for="inputProductName">Product Name</label>
-                                                <input class="form-control" name="inputProductName" id="inputProductName" placeholder="Enter Product Name" />
+                                                <input class="form-control" name="inputProductName" id="inputProductName" type="text" autocomplete="off" onkeyup="showProducts(this.value)" placeholder="Enter Product Name" />
                                             </div>
                                             <!-- Form Group (Review)            -->
                                             <div class="mb-3">
@@ -83,17 +83,6 @@
 
 {% block scripts %}
     <script> let msg = {{msg|tojson}}</script>
-    <script>
-        $(document).ready(function(){
-            if (msg != '') {
-                $("#alert-msg").show();
-            }
-            if (msg == "Please Login First!") {
-
-                setTimeout("window.location.href='/login'", 1000);
-            }
-        })
-
-    </script>
+    <script src="{{ url_for('static',filename='/js/add_review.js') }}"></script>
 {% endblock scripts %}
 
