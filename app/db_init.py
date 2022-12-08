@@ -69,6 +69,15 @@ cur.execute('''
 );
 ''')
 
+cur.execute('''
+        create table review_histories
+(
+    tx_hash varchar(500) primary key,
+    review_id int,
+    create_time varchar(50)
+);
+''')
+
 conn.commit()
 cur.close()
 conn.close()
