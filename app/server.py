@@ -194,6 +194,10 @@ def addReview():
                 cursor.execute('INSERT INTO product2reviews\
                                  VALUES (%s, %s)', \
                                (productId, reviewId))
+                cursor.execute('''
+                INSERT INTO review_histories
+                VALUES(%s, %s, %s)
+                ''', (w3.toHex(txHash), reviewId, createTime))
                 conn.commit()
                 msg = 'You have successfully added a review!'
             cursor.close()
@@ -277,6 +281,11 @@ def editSubmitReview(review_id):
                 SET tx_hash=%s, title=%s, product_name=%s, review=%s, pros=%s, cons=%s, rating=%s, create_time=%s
                 where review_id=%s
                 ''', (w3.toHex(txHash), title, productName, review, pros, cons, rating, createTime, review_id))
+
+                cursor.execute('''
+                INSERT INTO review_histories
+                VALUES(%s, %s, %s)
+                ''', (w3.toHex(txHash), review_id, createTime))
                 conn.commit()
                 msg = 'You have successfully edited a review!'
                 return render_template('edit-review.html', msg=msg, review=reviewEntry)
@@ -293,6 +302,9 @@ def review(user_id, review_id):
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM reviews WHERE user_id = %s and review_id = %s', (user_id, review_id,))
     review = cursor.fetchone()
+    cursor.execute('SELECT * FROM review_histories WHERE review_id = %s ORDER BY create_time ASC', (review_id,))
+    editHistory = cursor.fetchall()
+    print(editHistory)
     reviewEntry = {"Id": review[0],
                    "Title": review[3],
                    "ProductName": review[4],
@@ -304,7 +316,7 @@ def review(user_id, review_id):
                    }
     conn.commit()
     cursor.close()
-    return render_template('review.html', review=reviewEntry)
+    return render_template('review.html', review=reviewEntry, editHistory=editHistory)
 
 
 @app.route('/review/verify', methods=['POST'])

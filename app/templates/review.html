@@ -58,13 +58,22 @@
 
                     </div>
                  <button class='btn btn-primary' style="margin-top: 10px;" id = 'verify'>Verify</button>
+        </div>
+        </div>
+
+        <div class="card m-10">
+            <div class="card-header"> Edit History</div>
+
+            <div class="card-body">
+                <div class="timeline" id="reviewTimeline"></div>
             </div>
         </div>
 
 {% endblock %}
 
 {% block scripts %}
-        <script src="{{ url_for('static',filename='/js/review.js') }}"> </script>
-        <script> let review = {{review|tojson}} </script>
+    <script src="{{ url_for('static',filename='/js/review.js') }}"> </script>
+    <script> let review = {{review|tojson}} </script>
+    <script> let editHistory = {{editHistory|tojson}} </script>
 {% endblock scripts %}
 
