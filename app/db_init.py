@@ -15,6 +15,7 @@ cur.execute('DROP TABLE IF EXISTS product2reviews;')
 cur.execute('DROP TABLE IF EXISTS users;')
 cur.execute('DROP TABLE IF EXISTS reviews;')
 cur.execute('DROP TABLE IF EXISTS products;')
+cur.execute('DROP TABLE IF EXISTS review_histories;')
 cur.execute('''
     CREATE TABLE users (id serial PRIMARY KEY,
                         username varchar (50) NOT NULL,
