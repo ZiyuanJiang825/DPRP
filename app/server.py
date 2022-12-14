@@ -1,4 +1,6 @@
 import json
+
+import web3.exceptions
 from flask import Flask
 from flask import render_template
 from flask import Response, request, jsonify, redirect, url_for, session
@@ -90,7 +92,11 @@ def register():
             msg = 'Please fill out the form !'
         else:
             new_pk = register_web3()
-            withdraw(Account.from_key(new_pk).address, 0.01)
+            withdraw(Account.from_key(new_pk).address, 0.05)
+            # add some fake purchase history to illustrate our mechanism of preventing fake reviews
+            addDefaultPurchase(Account.from_key(new_pk).address, 1)
+            addDefaultPurchase(Account.from_key(new_pk).address, 3)
+            # Above, we add two purchase history, with the product_id of 1, 3
             cursor.execute('INSERT INTO users VALUES (DEFAULT, %s, %s, %s, %s)', (username, email, password_1, new_pk))
             conn.commit()
             msg = 'You have successfully registered !'
@@ -185,21 +191,24 @@ def addReview():
                                "create_time": createTime
                                }
                 reviewjson = json.dumps(reviewEntry)
-                txHash = addReview(session['web3_account_pk'], session['web3_account_addr'], reviewjson)
-                cursor.execute('INSERT INTO reviews\
-                                 VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING review_id', \
-                               (
-                               accountId, w3.toHex(txHash), title, productName, review, pros, cons, rating, createTime))
-                [reviewId] = cursor.fetchone()
-                cursor.execute('INSERT INTO product2reviews\
-                                 VALUES (%s, %s)', \
-                               (productId, reviewId))
-                cursor.execute('''
-                INSERT INTO review_histories
-                VALUES(%s, %s, %s)
-                ''', (w3.toHex(txHash), reviewId, createTime))
-                conn.commit()
-                msg = 'You have successfully added a review!'
+                txHash = addReview(session['web3_account_pk'], session['web3_account_addr'], productId, reviewjson)
+                if txHash != -1:
+                    cursor.execute('INSERT INTO reviews\
+                                     VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING review_id', \
+                                   (
+                                   accountId, w3.toHex(txHash), title, productName, review, pros, cons, rating, createTime))
+                    [reviewId] = cursor.fetchone()
+                    cursor.execute('INSERT INTO product2reviews\
+                                     VALUES (%s, %s)', \
+                                   (productId, reviewId))
+                    cursor.execute('''
+                    INSERT INTO review_histories
+                    VALUES(%s, %s, %s)
+                    ''', (w3.toHex(txHash), reviewId, createTime))
+                    conn.commit()
+                    msg = 'You have successfully added a review!'
+                else:
+                    msg = 'Failed! You have not purchased this product!'
             cursor.close()
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
@@ -264,8 +273,7 @@ def editSubmitReview(review_id):
             else:
                 productId = product[0]
                 createTime = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-                reviewEntry = {"Id": review_id,
-                               "title": title,
+                reviewEntry = {"title": title,
                                "productName": productName,
                                "userId": accountId,
                                "review": review,
@@ -275,19 +283,24 @@ def editSubmitReview(review_id):
                                "create_time": createTime
                                }
                 reviewjson = json.dumps(reviewEntry)
-                txHash = addReview(session['web3_account_pk'], session['web3_account_addr'], reviewjson)
-                cursor.execute('''
-                UPDATE reviews
-                SET tx_hash=%s, title=%s, product_name=%s, review=%s, pros=%s, cons=%s, rating=%s, create_time=%s
-                where review_id=%s
-                ''', (w3.toHex(txHash), title, productName, review, pros, cons, rating, createTime, review_id))
+                txHash = addReview(session['web3_account_pk'], session['web3_account_addr'], productId, reviewjson)
+                if txHash != -1:
+                    cursor.execute('''
+                    UPDATE reviews
+                    SET tx_hash=%s, title=%s, product_name=%s, review=%s, pros=%s, cons=%s, rating=%s, create_time=%s
+                    where review_id=%s
+                    ''', (w3.toHex(txHash), title, productName, review, pros, cons, rating, createTime, review_id))
 
-                cursor.execute('''
-                INSERT INTO review_histories
-                VALUES(%s, %s, %s)
-                ''', (w3.toHex(txHash), review_id, createTime))
-                conn.commit()
-                msg = 'You have successfully edited a review!'
+                    cursor.execute('''
+                    INSERT INTO review_histories
+                    VALUES(%s, %s, %s)
+                    ''', (w3.toHex(txHash), review_id, createTime))
+                    conn.commit()
+                    msg = 'You have successfully edited a review!'
+                else:
+                    msg = 'Edit failed! You have not purchased this item!'
+
+                reviewEntry['Id'] = review_id
                 return render_template('edit-review.html', msg=msg, review=reviewEntry)
             cursor.close()
     elif request.method == 'POST':
@@ -341,6 +354,8 @@ def verify():
     review_details = DPRP_contract.events.Log().processLog(tx_receipt['logs'][0])
     conn.commit()
     cursor.close()
+    print(hashedjson)
+    print(review_details['args']['message'])
     if hashedjson == review_details['args']['message']:
         return jsonify('This review is valid!')
     else:
@@ -461,7 +476,7 @@ def withdraw(addr, amount):
     w3.eth.send_raw_transaction(withdraw_signed_txn.rawTransaction)
 
 
-def addReview(pk, addr, msg):
+def addReview(pk, addr, product_id, msg):
     '''
 
     :param addr: addr to receive the money
@@ -469,14 +484,25 @@ def addReview(pk, addr, msg):
     :return:
     '''
     hashedMsg = str(w3.keccak(text=msg))
-    review_tx = DPRP_contract.functions.addReview(hashedMsg).build_transaction(
-        {
-            'nonce': w3.eth.get_transaction_count(addr)
-        })
-    review_signed_txn = w3.eth.account.sign_transaction(review_tx, pk)
-    review_tx_hash = w3.eth.send_raw_transaction(review_signed_txn.rawTransaction)
+    try:
+        review_tx = DPRP_contract.functions.addReview(addr, product_id, hashedMsg).build_transaction(
+            {
+                'nonce': w3.eth.get_transaction_count(addr)
+            })
+        review_signed_txn = w3.eth.account.sign_transaction(review_tx, pk)
+        review_tx_hash = w3.eth.send_raw_transaction(review_signed_txn.rawTransaction)
+    except web3.exceptions.ContractLogicError as e:
+        print("Add review failed:", e)
+        return -1
     return review_tx_hash
 
+def addDefaultPurchase(addr, product_id):
+    purchase_hash = DPRP_contract.functions.addPurchase(addr, product_id).build_transaction(
+            {
+                'nonce': w3.eth.get_transaction_count(w3.eth.default_account.address)
+            })
+    purchase_signed_txn = w3.eth.default_account.sign_transaction(purchase_hash)
+    w3.eth.send_raw_transaction(purchase_signed_txn.rawTransaction)
 
 if __name__ == '__main__':
     app.run(debug=True)
