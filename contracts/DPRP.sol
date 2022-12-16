@@ -2,7 +2,7 @@ pragma solidity ^0.8.13;
 
 contract DPRP {
     address payable public owner;
-
+    mapping(address => mapping(uint => bool)) public purchase;
     constructor() {
         owner = payable(msg.sender);
     }
@@ -18,8 +18,13 @@ contract DPRP {
         payable(_to).transfer(_amount);
     }
 
-    function addReview(string memory message) external{
+    function addPurchase(address buyer, uint product_id) external {
+        require(msg.sender == owner, "caller is not owner");
+        purchase[buyer][product_id] = true;
+    }
+    function addReview(address user_address, uint product_id, string memory message) external{
+        require(purchase[user_address][product_id] == true, "user has not purchased this product!");
         emit Log(msg.sender, message);
     }
-    
+
 }
