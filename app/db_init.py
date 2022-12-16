@@ -20,8 +20,8 @@ cur.execute('''
     CREATE TABLE users (id serial PRIMARY KEY,
                         username varchar (50) NOT NULL,
                         email varchar (50) NOT NULL,
-                        password varchar (50) NOT NULL,
-                        private_key varchar (100) NOT NULL)
+                        password BYTEA NOT NULL,
+                        private_key BYTEA NOT NULL)
             '''
             )
 cur.execute('''

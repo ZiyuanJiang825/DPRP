@@ -106,7 +106,13 @@ export DB_PASSWORD = 'password';
 
 Run `db_init.py` to create all the tables that is needed for our project. If you are using IDE like PyCharm, remember to configure the environment variables (username and password) before running the script.
 
-  
+### Step 4: Set environment variable for database encryption
+
+Generate a key for encryption, and store it as `DB_KEY` for env variable.
+```python
+from cryptography.fernet import Fernet
+key = Fernet.generate_key()
+```
 
 Note:
 

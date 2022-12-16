@@ -13,11 +13,13 @@ from eth_account import Account
 import secrets
 from web3.gas_strategies.rpc import rpc_gas_price_strategy
 from datetime import datetime
+from cryptography.fernet import Fernet
 
 app = Flask(__name__)
 
 # in order to use session, we should assign a secret key to the app
 app.secret_key = os.environ['APP_SECRET_KEY']
+db_key = bytes(os.environ['DB_KEY'], encoding='utf-8')
 
 # set up database connection
 conn = psycopg2.connect(
@@ -47,16 +49,18 @@ def login():
     if request.method == 'POST' and 'inputUsername' in request.form and 'inputPassword' in request.form:
         username = request.form['inputUsername']
         password = request.form['inputPassword']
+        fernet = Fernet(db_key)
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password))
+        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
         account = cursor.fetchone()
-        if account:
+
+        if account and fernet.decrypt(bytes(account[3])) == bytes(password, encoding='utf-8'):
             session['loggedin'] = True
             session['id'] = account[0]
             session['username'] = account[1]
             session['email'] = account[2]
-            session['web3_account_pk'] = account[4]
-            session['web3_account_addr'] = Account.from_key(account[4]).address
+            session['web3_account_pk'] = fernet.decrypt(bytes(account[4])).decode('utf-8')
+            session['web3_account_addr'] = Account.from_key(session['web3_account_pk']).address
             msg = 'Logged in successfully !'
             return redirect(url_for('index'))
         else:
@@ -96,8 +100,9 @@ def register():
             # add some fake purchase history to illustrate our mechanism of preventing fake reviews
             addDefaultPurchase(Account.from_key(new_pk).address, 1)
             addDefaultPurchase(Account.from_key(new_pk).address, 3)
+            fernet = Fernet(db_key)
             # Above, we add two purchase history, with the product_id of 1, 3
-            cursor.execute('INSERT INTO users VALUES (DEFAULT, %s, %s, %s, %s)', (username, email, password_1, new_pk))
+            cursor.execute('INSERT INTO users VALUES (DEFAULT, %s, %s, %s, %s)', (username, email, psycopg2.Binary(fernet.encrypt(bytes(password_1, encoding='utf-8'))), psycopg2.Binary(fernet.encrypt(bytes(new_pk, encoding='utf-8')))))
             conn.commit()
             msg = 'You have successfully registered !'
         cursor.close()
