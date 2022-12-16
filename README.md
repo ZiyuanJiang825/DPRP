@@ -226,5 +226,6 @@ Change the provider to Injected Provider - MetaMask, deploy the contract and cop
 ```shell
 heroku config:set DATABASE_URL=xxxx
 heroku config:set APP_SECRET_KEY=xxxx
+heroku config:set DB_KEY=xxxx
 ```
 For the secret key, use `os.urandom(32).hex()` to generate.
