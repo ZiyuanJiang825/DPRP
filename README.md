@@ -213,7 +213,7 @@ We will use Goerli test network as our blockchain network.
 
 ### Step 1: Set up an admin account and request some coins
 Go to Metamask, create an account, and then go to this [website](https://goerlifaucet.com/
-) to request some coins daily. Set the private key of admin in `web3_config.py`.
+) to request some coins daily. Set the private key of admin in step 4.
 
 ### Step 2: Get the API of testnet
 Register an account and a project on Infura, use its Goerli API address, change accordingly in `web3_config.py`
@@ -227,5 +227,6 @@ Change the provider to Injected Provider - MetaMask, deploy the contract and cop
 heroku config:set DATABASE_URL=xxxx
 heroku config:set APP_SECRET_KEY=xxxx
 heroku config:set DB_KEY=xxxx
+heroku config:set ADMIN_PRIVATE_KEY=xxxx
 ```
 For the secret key, use `os.urandom(32).hex()` to generate.

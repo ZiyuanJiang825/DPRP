@@ -20,6 +20,6 @@ signed_txn = w3.eth.default_account.sign_transaction(dict(
     gas=100000,
     gasPrice=w3.eth.generate_gas_price(),
     to=CONTRACT_ADDRESS,
-    value=Web3.toWei(1, 'ether')
+    value=Web3.toWei(0.4, 'ether')
   ))
 w3.eth.send_raw_transaction(signed_txn.rawTransaction)

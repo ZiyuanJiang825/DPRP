@@ -2,7 +2,7 @@
 # in development, please set these values to be your own values
 
 # this should be changed for your own
-CONTRACT_ADDRESS = '0x83835a649162888EfAbA72CfB380D90E36f44851'
+CONTRACT_ADDRESS = '0x144DFaf5B58eA30373aceA0772A9e44Ded28f0F5'
 
 # do not need to change it
 CONTRACT_ABI = [
@@ -145,5 +145,5 @@ CONTRACT_ABI = [
 	}
 ]
 
-# your URL for web3 test server
-WEB3_URL = 'HTTP://127.0.0.1:7545'
+# your URL for web3 test server.
+WEB3_URL = 'https://goerli.infura.io/v3/5b2de740e4494c138e088320d1ea5cac'
