@@ -496,9 +496,9 @@ def addReview(pk, addr, product_id, msg):
             })
         review_signed_txn = w3.eth.account.sign_transaction(review_tx, pk)
         review_tx_hash = w3.eth.send_raw_transaction(review_signed_txn.rawTransaction)
-        tx_receipt = w3.eth.waitForTransactionReceipt(review_tx_hash)
-    except web3.exceptions.ContractLogicError as e:
-        print("Add review failed:", e)
+        tx_receipt = w3.eth.waitForTransactionReceipt(review_tx_hash, timeout=3)
+    except Exception:
+        print("Add review failed!")
         return -1
     return review_tx_hash
 
