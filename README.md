@@ -10,12 +10,58 @@ DPRP is a Decentralized Product Review Platform.
 
 - Kerim Kurttepeli (kk3084)
 
-## Features
-- Review features including adding, viewing, and verifying a review are added. Please checkout feature/review branch
-- Product and product2reviews tables are added in local db for review test. (A product named 'ipad' is pre-inserted for review test)
+## GitHub Repo:
+https://github.com/ZiyuanJiang825/DPRP/tree/prod-final
 
+(Note: Make sure you are in `prod-final` branch. This is the demo version for production).
+
+## Deployment Link:
+https://dprp-final.herokuapp.com/
+
+## Demo Video Link:
+https://www.youtube.com/watch?v=GfUnU8TzuQk
+
+## Slide Link:
+https://docs.google.com/presentation/d/104SabAEYt0UUwtfQh2rAvqwoJmvYUIJo/edit?usp=sharing&ouid=101963760118774812584&rtpof=true&sd=true
+
+## Important Notice before running the app
+Since we are running on Goerli testnet, sometimes it takes longer to confirm a transaction.
+We haven't implemented async function, so the server will timeout when waiting too long. It will happen
+to all operations using web3 (register, add review, edit review).
+
+If you cannot register, you can use this test account to login and interact with the interface first:
+
+**Account Name**: jiangzy17
+
+**password**: 123456
+# Features
+- User
+  - User can register for an account, and will get a public address on the blockchain,
+  along with some ETHs sending from the contract.
+  - User can sign in with the correct username and password.
+  - The system will detect the valid formats of registration form.
+- Navigation
+  - There is always a navbar on the left and the top of pages. Left navbar shows 
+  all the entries to different main features. Top navbar allows users to check the profile and logout.
+  - The homepage also shows the entries to the main features.
+- Reviews
+  - A user can add a review by entering details. After adding the review, the review will be hashed
+  and stored on the blockchain by calling a contract function.
+  - A user can see all my reviews and see the detail of every review. A user can verify
+  the review on the detail page. Verification means the review is safely stored on the blockchain.
+  - A user can edit an existing review and see all the review histories (edit history).
+  - To prevent fake reviews, a user can only add reviews to the products he/she purchased before. For testing,
+  we add two purchase histories for every user when they register. They are with product_id 1 and 3.
+- Products
+  - A user can add a product by entering details.
+  - A user can see a product detail and all the reviews of this product.
+  - A user can search for certain products.
+- Security
+  - We encrypt all sensitive data including password and private key before storing in our database.
+  - All environment variables are stored on Heroku, on which they are safely preserved.
+  - We use blockchain to interact with many data. Every record can be tracked and verified. They are immutable
+  so every user can trust the authentication on our platform.
   
-
 # Development Guide
 
 ## Database Setup
