@@ -92,7 +92,7 @@ def register():
             msg = 'Please fill out the form !'
         else:
             new_pk = register_web3()
-            withdraw(Account.from_key(new_pk).address, 0.05)
+            withdraw(Account.from_key(new_pk).address, 0.01)
             # add some fake purchase history to illustrate our mechanism of preventing fake reviews
             addDefaultPurchase(Account.from_key(new_pk).address, 1)
             addDefaultPurchase(Account.from_key(new_pk).address, 3)
@@ -392,7 +392,6 @@ def view_proudct(product_id):
             ON users.id=reviews.user_id
     ''', (product_id,))
     reviews = cursor.fetchall()
-    print(reviews)
     conn.commit()
     cursor.close()
     return render_template('product.html', product=productEntry, reviews=reviews)
@@ -471,10 +470,13 @@ def withdraw(addr, amount):
     withdraw_tx_hash = DPRP_contract.functions.withdraw(addr, Web3.toWei(amount, 'ether')).build_transaction(
         {'gas': 100000,
          'gasPrice': w3.eth.generate_gas_price(),
-         'nonce': w3.eth.get_transaction_count(w3.eth.default_account.address)
+         'nonce': w3.eth.get_transaction_count(w3.eth.default_account.address),
+         'from': w3.eth.default_account.address
          })
     withdraw_signed_txn = w3.eth.default_account.sign_transaction(withdraw_tx_hash)
-    w3.eth.send_raw_transaction(withdraw_signed_txn.rawTransaction)
+    tx_hash = w3.eth.send_raw_transaction(withdraw_signed_txn.rawTransaction)
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    print("withdraw!")
 
 
 def addReview(pk, addr, product_id, msg):
@@ -488,7 +490,9 @@ def addReview(pk, addr, product_id, msg):
     try:
         review_tx = DPRP_contract.functions.addReview(addr, product_id, hashedMsg).build_transaction(
             {
-                'nonce': w3.eth.get_transaction_count(addr)
+                'nonce': w3.eth.get_transaction_count(addr),
+                'gas': 100000,
+                'gasPrice': w3.eth.generate_gas_price()
             })
         review_signed_txn = w3.eth.account.sign_transaction(review_tx, pk)
         review_tx_hash = w3.eth.send_raw_transaction(review_signed_txn.rawTransaction)
@@ -498,12 +502,21 @@ def addReview(pk, addr, product_id, msg):
     return review_tx_hash
 
 def addDefaultPurchase(addr, product_id):
+    print("Add default purchase")
     purchase_hash = DPRP_contract.functions.addPurchase(addr, product_id).build_transaction(
             {
-                'nonce': w3.eth.get_transaction_count(w3.eth.default_account.address)
+                'nonce': w3.eth.get_transaction_count(w3.eth.default_account.address),
+                'from': w3.eth.default_account.address,
+                'gasPrice': w3.toWei(3, 'gwei'),
+                'gas': 100000
             })
     purchase_signed_txn = w3.eth.default_account.sign_transaction(purchase_hash)
-    w3.eth.send_raw_transaction(purchase_signed_txn.rawTransaction)
+    try:
+        tx_hash = w3.eth.send_raw_transaction(purchase_signed_txn.rawTransaction)
+        tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+        print(tx_receipt)
+    except ValueError:
+        print("Pending for confirmation")
 
 if __name__ == '__main__':
     app.run(debug=False)
