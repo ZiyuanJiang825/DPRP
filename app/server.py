@@ -7,6 +7,8 @@ from flask import Response, request, jsonify, redirect, url_for, session
 import re
 import psycopg2
 import os
+import time
+import requests
 from web3 import Web3
 from web3_config import *
 from eth_account import Account
@@ -16,7 +18,7 @@ from datetime import datetime
 from cryptography.fernet import Fernet
 
 app = Flask(__name__)
-
+APP_URL = "https://dprp-final.herokuapp.com/"
 # in order to use session, we should assign a secret key to the app
 app.secret_key = os.environ['APP_SECRET_KEY']
 db_key = bytes(os.environ['DB_KEY'], encoding='utf-8')
@@ -33,6 +35,10 @@ DPRP_contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)
 # generate gas price strategy
 w3.eth.set_gas_price_strategy(rpc_gas_price_strategy)
 
+
+@app.route('/keep-alive')
+def keep_alive():
+    return "Connection alive"
 
 @app.route('/')
 def start_redirect():
@@ -496,7 +502,16 @@ def addReview(pk, addr, product_id, msg):
             })
         review_signed_txn = w3.eth.account.sign_transaction(review_tx, pk)
         review_tx_hash = w3.eth.send_raw_transaction(review_signed_txn.rawTransaction)
-        tx_receipt = w3.eth.waitForTransactionReceipt(review_tx_hash, timeout=10)
+        while True:
+            response = requests.get(f"{WEB3_URL}/txs/{review_tx_hash}")
+
+            if response.status_code == 200:
+                break
+            else:
+                requests.get(f"{APP_URL}/keep-alive")
+                time.sleep(1)
+
+        # tx_receipt = w3.eth.waitForTransactionReceipt(review_tx_hash, timeout=10)
     except Exception:
         print("Add review failed!")
         return -1
