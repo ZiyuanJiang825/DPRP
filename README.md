@@ -238,5 +238,5 @@ Repeat web3 setup to create a new testnet for testing, then run `tests.py` for t
   - Register, Login, Logout
   - Add a Review, Add a Product
   - Verify a Review, Edit a Review
-- Testing the securities:
+- Testing the security:
   - Fake Reviews (Reviews of a product that has not been purchased by the user)
