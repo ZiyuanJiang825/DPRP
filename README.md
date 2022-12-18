@@ -228,3 +228,15 @@ heroku config:set DATABASE_URL=xxxx
 heroku config:set APP_SECRET_KEY=xxxx
 ```
 For the secret key, use `os.urandom(32).hex()` to generate.
+
+# Test
+## Setup
+Repeat web3 setup to create a new testnet for testing, then run `tests.py` for testing.
+
+## Testing Coverage
+- Exhaustively Testing the basic funcionalities:
+  - Register, Login, Logout
+  - Add a Review, Add a Product
+  - Verify a Review, Edit a Review
+- Testing the securities:
+  - Fake Reviews (Reviews of a product that has not been purchased by the user)
