@@ -2,7 +2,7 @@
 # in development, please set these values to be your own values
 
 # this should be changed for your own
-CONTRACT_ADDRESS = '0x2461F884144358a2126a72865464F659b6130142'
+CONTRACT_ADDRESS = '0xD409d0993B6A04cc319C31765D084F52970EECe2'
 
 # do not need to change it
 CONTRACT_ABI = [

@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "truffle-contract": "^4.0.31",
+    "web3": "^1.8.1"
+  }
+}
