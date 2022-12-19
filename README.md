@@ -24,6 +24,9 @@ https://www.youtube.com/watch?v=GfUnU8TzuQk
 ## Slide Link:
 https://docs.google.com/presentation/d/104SabAEYt0UUwtfQh2rAvqwoJmvYUIJo/edit?usp=sharing&ouid=101963760118774812584&rtpof=true&sd=true
 
+## Testing:
+Please go to `test` branch for all the tests of this project. We tested the functionalities of our frontend and backend, and also used Mocha and Truffle to test our smart contract. Details can be found in the README on `test` branch.
+
 ## Important Notice before running the app
 Since we are running on Goerli testnet, sometimes it takes longer to confirm a transaction.
 We haven't implemented async function, so the server will timeout when waiting too long. It will happen
